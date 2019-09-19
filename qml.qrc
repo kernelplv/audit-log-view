@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
+        <file>WMain.qml</file>
+        <file>fonts/fa-brands-400.ttf</file>
+        <file>icons/open-folder.svg</file>
+        <file>rosa.jpg</file>
     </qresource>
+    <qresource prefix="/fonts"/>
 </RCC>
