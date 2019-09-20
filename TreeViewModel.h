@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QStandardItemModel>
+#include <vector>
+#include <unordered_map>
+#include <iostream>
 
 class TreeViewModel : public QStandardItemModel
 {
@@ -9,17 +12,15 @@ class TreeViewModel : public QStandardItemModel
 public:
     TreeViewModel(QObject* parent = nullptr);
 
-    enum Roles
-    {
-        Name = Qt::DisplayRole,
-        Description = Qt::WhatsThisRole,
-        Hash = Qt::UserRole + 1
-    };
+    void addColumns(const std::vector<std::string>& );
+    void addRow(const QString& sub, const std::vector<std::string>& );
 
     QHash<int, QByteArray> roleNames() const override;
+
 private:
-    void addRow(const QString& sub, const QString name, const QString& description);
+    std::unordered_map<int, std::string> columns;
     QStandardItem* getSub(const QString& subName);
+
     QHash<int, QByteArray> m_roleNameMapping;
 };
 

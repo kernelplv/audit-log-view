@@ -1,5 +1,4 @@
 #include "UICom.h"
-#include "TreeViewModel.h"
 #include "TagCommon.h"
 
 UICom::UICom(QObject *parent)
@@ -7,9 +6,9 @@ UICom::UICom(QObject *parent)
 {
     qDebug() << "UICom Initialize...";
 
-    TreeViewModel* mLog = new TreeViewModel();
+    treelog = new TreeViewModel();
 
-    engine.rootContext()->setContextProperty("logmodel", mLog);
+    engine.rootContext()->setContextProperty("logmodel", treelog);
     engine.rootContext()->setContextProperty("UICom", this);
     engine.load(QUrl(QStringLiteral("qrc:/WMain.qml")));
 
@@ -30,17 +29,26 @@ bool UICom::processLog(QUrl logpath)
 {
     LogParser parser(logpath.path().toStdString());
 
-    //  NEXT STL TERRITORY
+
 
     if (!parser)  {
         qDebug() << "Engine: cant open file";
         return false;
     }
 
-    //
-    parser.addTag<TagCommon>("TestColumn1", true, false);   // example: "value1 ... value2" If open tag is space " "
+    //  NEXT STL TERRITORY
+
+
+    treelog->addColumns({"date", "desc", "hash"});
+
+    treelog->addRow("18:30", {"login", "success","1"});
+    treelog->addRow("18:30", {"exit", "success", "2"});
+    treelog->addRow("19:07", {"login", "failed", "3"});
+    treelog->addRow("login", {"complete", "description", "1.5"});
+
+    parser.addTag<TagCommon>("TestColumn1", true, false);
     parser.addTag<TagCommon>("TestColumn2", true, false);
-    parser.addTag<TagCommon>("TestColumn3", true, true);   // example: "value1 ... value2" If close tag is space " "
+    parser.addTag<TagCommon>("TestColumn3", true, true);
     parser.process();
     parser.printInternal();
     return true;

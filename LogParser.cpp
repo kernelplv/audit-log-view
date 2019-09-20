@@ -31,8 +31,7 @@ string LogParser::next(const TagModel & tag)
                     and logfile >> buff)
     {
         if ( buff == '\n' ) {
-            std::cout << "unexpected end-of-line... continue" << endl;
-            continue;
+            break;
         }
 
         if ( !opened and !start_ignore )

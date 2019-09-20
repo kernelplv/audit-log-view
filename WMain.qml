@@ -131,7 +131,7 @@ Window
 
         C1.TableViewColumn {
             title: "Time-stamp"
-            role: "name"
+            role: "date"
         }
         C1.TableViewColumn {
             title: "Summary"

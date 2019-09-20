@@ -8,6 +8,7 @@
 #include <QQuickItem>
 #include <string>
 
+#include "TreeViewModel.h"
 #include "LogParser.h"
 
 class UICom : public QObject
@@ -22,6 +23,7 @@ private:
     QQmlApplicationEngine engine;
     QObject* qmlRoot;
 
+    TreeViewModel* treelog;
 
 public:
     explicit UICom(QObject *parent = nullptr);
