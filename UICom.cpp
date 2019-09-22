@@ -34,23 +34,12 @@ bool UICom::processLog(QUrl logpath)
         return false;
     }
 
-    // NEXT STL TERRITORY
-
     parser.addTag<>("date", true, false);
     parser.addTag<>("desc", true, false);
     parser.addTag<>("hash", true, true);
     parser.process();
 
     processModel( parser.getTable() );
-
-
-//    treelog->addColumns({"date", "desc", "hash"});
-
-//    treelog->addRow("18:30", {"login", "success","1"});
-//    treelog->addRow("18:30", {"exit", "success", "2"});
-//    treelog->addRow("19:07", {"login", "failed", "3"});
-//    treelog->addRow("login", {"complete", "description", "1.5"});
-
 
     return true;
 }
@@ -76,11 +65,12 @@ void UICom::processModel(const std::vector<std::vector<std::string> > table)
         for (size_t j = 0; j < table.size(); j++)
         {
             tmpRowData.push_back(table[j][i]);
-            emit changedData(j);
+
         }
         treelog->addRow("", tmpRowData);
         tmpRowData.clear();
     }
+    emit changedData(0);
 
 }
 

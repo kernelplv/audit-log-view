@@ -132,34 +132,22 @@ Window
 
         model: logmodel
 
-//        Loader {
-//            id: loaderColumns
-//            active: true
-//            sourceComponent: drawerColumns
-//        }
         Connections {
             target: UICom
-            onChangedData:{
-                c1.role = logmodel.ColumnNames[0];
-                c2.role = logmodel.ColumnNames[1];
-                c3.role = logmodel.ColumnNames[2];
-            }
-        }
+            onChangedData: {
 
-        C1.TableViewColumn {
-            id: c1
-            title: "date"
-            role: ""
-        }
-        C1.TableViewColumn {
-            id: c2
-            title: "desc"
-            role: ""
-        }
-        C1.TableViewColumn {
-            id: c3
-            title: "hash"
-            role: ""
+                var names = logmodel.ColumnNames;
+
+                while (tree.columnCount > 0)
+                    tree.removeColumn(0);
+
+                for (var j = 0; j < names.length; j++)
+                    tree.addColumn(Qt.createQmlObject (
+                                       'import QtQuick 2.0; import QtQuick.Controls 1.4;'+
+                                       'TableViewColumn {title:"'+names[j]+
+                                       '"; role: title}', tree) );
+
+            }
         }
     }
 }
