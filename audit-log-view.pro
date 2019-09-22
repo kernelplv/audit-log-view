@@ -14,7 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     LogParser.cpp \
-    TagCommon.cpp \
+    TagDefault.cpp \
     TagModel.cpp \
     TreeViewModel.cpp \
     UICom.cpp
@@ -34,7 +34,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     LogParser.h \
-    TagCommon.h \
+    TagDefault.h \
     TagModel.h \
     TreeViewModel.h \
     UICom.h

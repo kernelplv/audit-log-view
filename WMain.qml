@@ -32,7 +32,7 @@ Window
         onAccepted: {
             root.title = root.title + " : " + fileUrl;
 
-            if (!UICom.processLog(fileUrl)) {
+            if ( !UICom.processLog(fileUrl) ) {
                 btnOpen.icon.color = "#ffffff";
                 alert(qsTr("UI: cant open file"));
             }
@@ -40,6 +40,7 @@ Window
         }
         onRejected: {
             root.title = UICom.AppName;
+            btnOpen.icon.color = "#ffffff";
         }
     }
 
@@ -118,8 +119,10 @@ Window
     }
 
     C1.TreeView {
+        id: tree
         flickableItem.interactive: false
         sortIndicatorVisible: true
+        sortIndicatorColumn: 0
         anchors{
             right: parent.right
             left: parent.left
@@ -129,17 +132,34 @@ Window
 
         model: logmodel
 
+//        Loader {
+//            id: loaderColumns
+//            active: true
+//            sourceComponent: drawerColumns
+//        }
+        Connections {
+            target: UICom
+            onChangedData:{
+                c1.role = logmodel.ColumnNames[0];
+                c2.role = logmodel.ColumnNames[1];
+                c3.role = logmodel.ColumnNames[2];
+            }
+        }
+
         C1.TableViewColumn {
-            title: "Time-stamp"
-            role: "date"
+            id: c1
+            title: "date"
+            role: ""
         }
         C1.TableViewColumn {
-            title: "Summary"
-            role: "desc"
+            id: c2
+            title: "desc"
+            role: ""
         }
-        C1.TableViewColumn{
-            title: "Hash"
-            role: "hash"
+        C1.TableViewColumn {
+            id: c3
+            title: "hash"
+            role: ""
         }
     }
 }

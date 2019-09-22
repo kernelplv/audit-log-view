@@ -2,23 +2,24 @@
 
 #include <QStandardItemModel>
 #include <vector>
-#include <unordered_map>
 #include <iostream>
 
 class TreeViewModel : public QStandardItemModel
 {
     Q_OBJECT
-
+    Q_PROPERTY(QStringList ColumnNames READ getColumnNames)
 public:
     TreeViewModel(QObject* parent = nullptr);
 
     void addColumns(const std::vector<std::string>& );
     void addRow(const QString& sub, const std::vector<std::string>& );
 
+    QStringList getColumnNames();
+
     QHash<int, QByteArray> roleNames() const override;
 
 private:
-    std::unordered_map<int, std::string> columns;
+    std::vector<std::string> columns;
     QStandardItem* getSub(const QString& subName);
 
     QHash<int, QByteArray> m_roleNameMapping;

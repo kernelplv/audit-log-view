@@ -1,5 +1,5 @@
 #include "LogParser.h"
-#include "TagCommon.h"
+#include "TagDefault.h"
 
 using namespace std;
 
@@ -107,6 +107,16 @@ void LogParser::printInternal(std::ostream& out)
     }
 }
 
+const std::vector<TagModel*> & LogParser::getTags() const
+{
+    return tags;
+}
+
+const std::vector<std::vector<std::string>> & LogParser::getTable() const
+{
+    return logtable;
+}
+
 void LogParser::reset()
 {
     tags.clear();
@@ -118,10 +128,8 @@ bool LogParser::process()
         cout << "cant open file" << endl;
         return false;
     }
-    if ( tags.empty() ) {
-        cout << "no tags" << endl;
-        return false;
-    }
+
+    assert( !tags.empty() && "no tags");
 
     // fill column names
     for(const auto& t : tags) {

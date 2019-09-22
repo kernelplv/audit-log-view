@@ -8,17 +8,18 @@ TreeViewModel::TreeViewModel(QObject *parent)
 
 void TreeViewModel::addColumns(const std::vector<std::string> & col_names)
 {
+    assert (col_names.empty() == false && "column array is empty");
+
     int idx = Qt::UserRole +1;
 
-    columns[Qt::DisplayRole] = col_names[0];
+    columns.push_back(col_names[0]);
     m_roleNameMapping[Qt::DisplayRole] = col_names[0].c_str();
 
     for (size_t i = 1; i < col_names.size(); i++, idx++)
     {
-        columns[idx] = col_names[i];
+        columns.push_back(col_names[i]);
         m_roleNameMapping[idx] = col_names[i].c_str();
     }
-
 
 }
 
@@ -29,19 +30,29 @@ QHash<int, QByteArray> TreeViewModel::roleNames() const
 
 void TreeViewModel::addRow(const QString& sub, const std::vector<std::string>& values)
 {
-    if ( columns.size() < values.size() ) {
-        std::cout << "columns count && data count not equal" << std::endl;
-        return;
-    }
+    assert (columns.size() >= values.size() && "columns count && data count not equal");
 
     auto subRow = new QStandardItem(values[0].c_str());
-    for ( size_t i = 1, role = Qt::UserRole + 1; i < values.size(); i++, role++)
+
+    int role = Qt::UserRole + 1;
+    for ( size_t i = 1; i < values.size(); i++, role++)
     {
         subRow->setData(values[i].c_str(), role);
     }
 
     QStandardItem* row = getSub(sub);
     row->appendRow(subRow);
+}
+
+QStringList TreeViewModel::getColumnNames()
+{
+    QStringList names;
+    for (const auto& n : columns)
+    {
+        names.append(n.c_str());
+    }
+
+    return names;
 }
 
 QStandardItem* TreeViewModel::getSub(const QString& subName)

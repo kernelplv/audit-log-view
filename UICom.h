@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QQuickItem>
 #include <string>
+#include <algorithm>
 
 #include "TreeViewModel.h"
 #include "LogParser.h"
@@ -32,8 +33,10 @@ public:
 
     Q_INVOKABLE
     bool processLog(QUrl);
+    void processModel(const std::vector<std::vector<std::string>> table);
 
 signals:
+    void changedData(size_t idx);
 
 public slots:
     void test();
