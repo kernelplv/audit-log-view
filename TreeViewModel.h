@@ -13,6 +13,7 @@ public:
 
     void addColumns(const std::vector<std::string>& );
     void addRow(const QString& sub, const std::vector<std::string>& );
+    void reset();
 
     QStringList getColumnNames();
 

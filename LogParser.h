@@ -25,7 +25,7 @@ public:
     LogParser(const std::string);
 
     void reset();                           // clear all included models
-    bool process();                         // process log file with included tag-models
+    bool run();                             // process log file with included tag-models
     size_t countTags();                     // return count of included models
 
     operator bool() const;

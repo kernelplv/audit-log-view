@@ -34,10 +34,11 @@ bool UICom::processLog(QUrl logpath)
         return false;
     }
 
-    parser.addTag<>("date", true, false);
-    parser.addTag<>("desc", true, false);
-    parser.addTag<>("hash", true, true);
-    parser.process();
+    parser.reset();
+    parser.addTag<>("Date", true, false);
+    parser.addTag<>("Description", true, false);
+    parser.addTag<>("Hash", true, true);
+    parser.run();
 
     processModel( parser.getTable() );
 
@@ -46,6 +47,8 @@ bool UICom::processLog(QUrl logpath)
 
 void UICom::processModel(const std::vector<std::vector<std::string> > table)
 {
+    treelog->reset();
+
     std::vector<std::string> headers;
     if ( !table.empty() )
     {
@@ -67,7 +70,7 @@ void UICom::processModel(const std::vector<std::vector<std::string> > table)
             tmpRowData.push_back(table[j][i]);
 
         }
-        treelog->addRow("", tmpRowData);
+        treelog->addRow(tmpRowData[0].c_str(), tmpRowData);
         tmpRowData.clear();
     }
     emit changedData(0);

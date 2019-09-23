@@ -120,9 +120,10 @@ const std::vector<std::vector<std::string>> & LogParser::getTable() const
 void LogParser::reset()
 {
     tags.clear();
+    logtable.clear();
 }
 
-bool LogParser::process()
+bool LogParser::run()
 {
     if ( !(*this) ) {
         cout << "cant open file" << endl;

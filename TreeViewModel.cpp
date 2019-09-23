@@ -44,6 +44,13 @@ void TreeViewModel::addRow(const QString& sub, const std::vector<std::string>& v
     row->appendRow(subRow);
 }
 
+void TreeViewModel::reset()
+{
+    clear();
+    columns.clear();
+    m_roleNameMapping.clear();
+}
+
 QStringList TreeViewModel::getColumnNames()
 {
     QStringList names;
@@ -58,7 +65,7 @@ QStringList TreeViewModel::getColumnNames()
 QStandardItem* TreeViewModel::getSub(const QString& subName)
 {
     QStandardItem* row;
-    auto rows = findItems( subName , Qt::MatchRecursive);
+    auto rows = this->findItems( subName , Qt::MatchRecursive);
 
     if (rows.count() > 0)
     {
@@ -67,7 +74,7 @@ QStandardItem* TreeViewModel::getSub(const QString& subName)
     else
     {
         row = new QStandardItem(subName);
-        appendRow( row );
+        this->appendRow( row );
     }
     return row;
 }

@@ -118,6 +118,25 @@ Window
 
     }
 
+    Connections {
+        target: UICom
+        onChangedData: {
+
+            var names = logmodel.ColumnNames;
+            var cnt = tree.columnCount;
+
+            for (var j = 0; j < names.length; j++)
+                tree.insertColumn(j, Qt.createQmlObject (
+                                   'import QtQuick 2.0; import QtQuick.Controls 1.4;'+
+                                   'TableViewColumn {title:"'+names[j]+
+                                   '"; role: title}', tree) );
+
+            while (tree.columnCount > names.length)
+                tree.removeColumn(tree.columnCount -1);
+
+        }
+    }
+
     C1.TreeView {
         id: tree
         flickableItem.interactive: false
@@ -132,24 +151,28 @@ Window
 
         model: logmodel
 
-        Connections {
-            target: UICom
-            onChangedData: {
-
-                var names = logmodel.ColumnNames;
-
-                while (tree.columnCount > 0)
-                    tree.removeColumn(0);
-
-                for (var j = 0; j < names.length; j++)
-                    tree.addColumn(Qt.createQmlObject (
-                                       'import QtQuick 2.0; import QtQuick.Controls 1.4;'+
-                                       'TableViewColumn {title:"'+names[j]+
-                                       '"; role: title}', tree) );
-
-            }
-        }
     }
+
+    Label {
+        id: txtNeedOpenFile
+        text: qsTr("Open .log file")
+        visible: tree.columnCount > 0 ? false : true
+        font {
+            family: "Verdana"
+            weight: Font.Normal
+            capitalization: Font.SmallCaps
+            pointSize: 16
+        }
+        anchors {
+            top: toolBar.bottom
+            right: parent.right
+            bottom: parent.bottom
+            left: parent.left
+        }
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
+    }
+
 }
 
 
