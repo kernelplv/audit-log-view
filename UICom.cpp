@@ -61,16 +61,16 @@ void UICom::processModel(const std::vector<std::vector<std::string> > table)
 
     //! todo: optimize
     std::vector<std::string> tmpRowData;
-    size_t i = 0, tmpSize = table[0].size();
+    size_t r = 0, tmpSize = table[0].size();
 
-    while (tmpSize > ++i)
+    while (tmpSize > ++r)
     {
-        for (size_t j = 0; j < table.size(); j++)
+        for (size_t c = 1; c < table.size(); c++)
         {
-            tmpRowData.push_back(table[j][i]);
+            tmpRowData.push_back(table[c][r]);
 
         }
-        treelog->addRow(tmpRowData[0].c_str(), tmpRowData);
+        treelog->addRow(table[0][r].c_str(), tmpRowData);
         tmpRowData.clear();
     }
     emit changedData(0);
