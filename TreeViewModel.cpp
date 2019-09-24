@@ -15,10 +15,10 @@ void TreeViewModel::addColumns(const std::vector<std::string> & col_names)
     columns.push_back(col_names[0]);
     m_roleNameMapping[Qt::DisplayRole] = col_names[0].c_str();
 
-    for (size_t i = 1; i < col_names.size(); i++, idx++)
+    for (auto i = col_names.begin() +1; i != col_names.end(); i++, idx++)
     {
-        columns.push_back(col_names[i]);
-        m_roleNameMapping[idx] = col_names[i].c_str();
+        columns.push_back(*i);
+        m_roleNameMapping[idx] = i->c_str();
     }
 
 }
@@ -28,20 +28,23 @@ QHash<int, QByteArray> TreeViewModel::roleNames() const
     return m_roleNameMapping;
 }
 
-void TreeViewModel::addRow(const QString& sub, const std::vector<std::string>& values)
+void TreeViewModel::addRow(const QString& node, const std::vector<std::string>& values)
 {
-    assert (columns.size() >= values.size() && "columns count && data count not equal");
-
-    auto subRow = new QStandardItem(values[0].c_str());
-
-    int role = Qt::UserRole + 1;
-    for ( size_t i = 1; i < values.size(); i++, role++)
+    //assert (columns.size() >= values.size() && "columns count && data count not equal");
+    if ( not values.empty() )
     {
-        subRow->setData(values[i].c_str(), role);
-    }
+        auto subRow = new QStandardItem(values[0].c_str());
 
-    QStandardItem* row = getSub(sub);
-    row->appendRow(subRow);
+        int role = Qt::UserRole + 1;
+        for ( auto i = values.begin() + 1; i != values.end(); i++, role++)
+        {
+            subRow->setData(i->c_str(), role);
+        }
+        QStandardItem* row = getNode(node);
+        row->appendRow(subRow);
+    }
+    else
+        getNode(node);
 }
 
 void TreeViewModel::reset()
@@ -54,27 +57,25 @@ void TreeViewModel::reset()
 QStringList TreeViewModel::getColumnNames()
 {
     QStringList names;
-    for (const auto& n : columns)
-    {
+    for (const auto& n : columns) {
         names.append(n.c_str());
     }
 
     return names;
 }
 
-QStandardItem* TreeViewModel::getSub(const QString& subName)
+QStandardItem* TreeViewModel::getNode(const QString& nodeName)
 {
     QStandardItem* row;
-    auto rows = this->findItems( subName , Qt::MatchRecursive);
+    auto rows = this->findItems(nodeName , Qt::MatchRecursive);
 
-    if (rows.count() > 0)
-    {
+    if (rows.count() > 0) {
         row = rows.at(0);
     }
     else
     {
-        row = new QStandardItem(subName);
-        this->appendRow( row );
+        row = new QStandardItem(nodeName);
+        this->appendRow(row);
     }
     return row;
 }

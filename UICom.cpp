@@ -63,15 +63,27 @@ void UICom::processModel(const std::vector<std::vector<std::string> > table)
     std::vector<std::string> tmpRowData;
     size_t r = 0, tmpSize = table[0].size();
 
+    QString node("");
     while (tmpSize > ++r)
     {
-        for (size_t c = 1; c < table.size(); c++)
-        {
-            tmpRowData.push_back(table[c][r]);
-
+        for (size_t c = 0; c < table.size(); c++) {
+            if ( c == 0 or c == 1) //! todo: group or not group
+            {
+                if ( node.isEmpty() ) {
+                    treelog->addRow(table[c][r].c_str());
+                    node = table[c][r].c_str();
+                }
+                else {
+                    treelog->addRow(node,{table[c][r]});
+                    node = table[c][r].c_str();
+                }
+            }
+            else
+                tmpRowData.push_back(table[c][r]);
         }
-        treelog->addRow(table[0][r].c_str(), tmpRowData);
+        treelog->addRow(node, tmpRowData);
         tmpRowData.clear();
+        node.clear();
     }
     emit changedData(0);
 
